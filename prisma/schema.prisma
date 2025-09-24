@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Poll {
+  id          Int     @id @default(autoincrement())
+  img_url     String? @db.LongText
+  poll_name   String // poll title
+  departments Json
+  description String? @db.Text
+  options Json?
+
+  publish_type PublishType
+  publish_date DateTime? // only required if publish_type = "schedule"
+  expiry_date  DateTime?
+
+  show_on_feed_by String? // can hold role/department/criteria
+  reminder_date   DateTime?
+  hide_voter      Boolean   @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+model Owais {
+  id          Int     @id @default(autoincrement())
+  img_url     String? @db.LongText
+  poll_name   String // poll title
+  departments Json
+  description String? @db.Text
+  options Json?
+
+  publish_type PublishType
+  publish_date DateTime? // only required if publish_type = "schedule"
+  expiry_date  DateTime?
+
+  show_on_feed_by String? // can hold role/department/criteria
+  reminder_date   DateTime?
+  hide_voter      Boolean   @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum PublishType {
+  NOW
+  SCHEDULE
+}

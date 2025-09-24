@@ -1,95 +1,73 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
+import React, { useEffect, useState } from "react";
+import Tab_Menu from "./components/TabMenu/Tab_Menu";
+import T_R_E_E_1 from "./components/Tree/T_R_E_E_1";
+import T_R_E_E_2 from "./components/Tree/T_R_E_E_2";
+import { Skeleton } from "primereact/skeleton";
+import T_R_E_E_3 from "./components/Tree/T_R_E_E_3";
 
 export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [loading, setLoading] = useState(true);
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+  const handleTabChange = (index: number) => {
+    setLoading(true);
+    setActiveIndex(index);
+
+    setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+  };
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  return (
+    <div className="w-full h-screen p-4">
+      <Tab_Menu activeIndex={activeIndex} onTabChange={handleTabChange} />
+
+      {/* Scrollable container */}
+      <div
+        className="scrollable w-full grid mt-5"
+        style={{
+          maxHeight: "calc(100vh - 120px)", // adjust based on header height
+          overflowY: "auto",
+          marginLeft : "10px" // keeps content clear of scrollbar
+        }}
+      >
+        {loading ? (
+          <>
+            <Skeleton className="m-2" width="48%" height="150px" borderRadius="10px" />
+            <Skeleton className="m-2" width="48%" height="150px" borderRadius="10px" />
+            <Skeleton  className="m-2" width="48%" height="150px" borderRadius="10px" />
+            <Skeleton className="m-2" width="48%" height="150px" borderRadius="10px" />
+          </>
+        ) : (
+          <>
+            {activeIndex === 0 && (
+              <>
+                <div className="col-6">
+                  <T_R_E_E_1 />
+                </div>
+                <div className="col-6">
+                  <T_R_E_E_2 />
+                </div>
+                <div className="col-6">
+                  <T_R_E_E_3 />
+                </div>
+              </>
+            )}
+            {activeIndex === 1 && (
+              <div className="card">Content for Random Testing</div>
+            )}
+            {activeIndex === 2 && <div className="card">Content for Test</div>}
+          </>
+        )}
+      </div>
     </div>
   );
 }
